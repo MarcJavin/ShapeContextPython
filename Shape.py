@@ -6,14 +6,14 @@ import pickle
 
 class Shape :
 
-
+    PATH = "/home/markus/Desktop/ShapeContextPython/"
     WIDTH = 1000
     HEIGHT = 1000
-    FACTOR = 100
+    FACTOR = 10
 
     def __init__(self, name, points, nb_theta=12, thresholds_r=[0.125,0.25,0.5,1,2]):
         self.name = name
-        self.points = np.array(points)
+        self.points = np.array(np.int32(points))
         self.nb_theta = nb_theta
         self.thresholds_r = thresholds_r
         self.histograms = np.zeros((len(points),len(thresholds_r),nb_theta))
@@ -24,8 +24,6 @@ class Shape :
         distances = np.zeros((nb_points,nb_points))
         angles = np.zeros((nb_points,nb_points))
         mean_distance = 0
-
-        print self.points
 
         for n1 in xrange(nb_points) :
             for n2 in xrange(n1+1,nb_points) :
@@ -88,8 +86,8 @@ class Shape :
                         self.histograms[n1,bin_r,bin_theta]+=1
 
 
-    def serialize(self):
-        pickle.dump(self, open( self.name, "wb" ))
+    def serialize(self, prefix=""):
+        pickle.dump(self, open( prefix+self.name, "wb" ))
 
     @staticmethod
     def deserialize(fic_name):
@@ -100,7 +98,7 @@ class Shape :
         img = np.zeros((Shape.HEIGHT,Shape.WIDTH,3), np.uint8)
         points = Shape.FACTOR*self.points
         cv2.fillPoly(img, np.int32([points]), (0,255,255))
-        cv2.imwrite(self.name+".jpg", img)
+        cv2.imwrite(Shape.PATH+self.name+".jpg", img)
 
     def print_picture_lines(self,img,color):
         points = Shape.FACTOR*self.points
