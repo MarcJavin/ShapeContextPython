@@ -10,7 +10,7 @@ import cv2
 
 PATH = "/home/markus/Desktop/ShapeContextPython/"
 
-def main():
+def train():
     for f in glob.glob(os.path.join("Training_set/", "*")):
 
         points = pickle.load(open(f,"rb"))
@@ -23,8 +23,26 @@ def main():
         shape.print_picture_lines(img,(0,255,0))
         cv2.imwrite(PATH + shape.name+".jpg", img)
 
+def main():
+    d1 = Shape.Shape.deserialize("disgust0:0","Trained_set/")
+    d2 = Shape.Shape.deserialize("disgust20:0","Trained_set/")
+    f = Shape.Shape.deserialize("fear0:0","Trained_set/")
 
+    prefix = "/home/markus/Desktop/ShapeContextPython/"
 
+    comp = ShapeComparator()
+    dd = comp.compare(d1,d2)
+    img = comp.print_result(prefix)
+    cv2.imwrite(prefix+"dd.jpg", img)
+    print dd
+    df = comp.compare(d1,f)
+    img = comp.print_result(prefix)
+    cv2.imwrite(prefix+"df.jpg", img)
+    print df
+    df2 = comp.compare(d2,f)
+    img = comp.print_result(prefix)
+    cv2.imwrite(prefix+"df2.jpg", img)
+    print df2
 
 
     return 0

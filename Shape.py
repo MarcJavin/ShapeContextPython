@@ -90,8 +90,8 @@ class Shape :
         pickle.dump(self, open( prefix+self.name, "wb" ))
 
     @staticmethod
-    def deserialize(fic_name):
-        return pickle.load( open( fic_name,"rb" ) )
+    def deserialize(fic_name, prefix=""):
+        return pickle.load( open( prefix+fic_name,"rb" ) )
 
 
     def print_picture(self):
