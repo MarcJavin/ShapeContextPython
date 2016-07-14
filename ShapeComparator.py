@@ -16,6 +16,16 @@ class ShapeComparator :
 
 
     def compare(self,shape1, shape2):
+        """
+            Find the best association between the points of shape1 and shape2
+            
+            Inputs:
+            - shape1 : first shape
+            - shape2 : second shape
+
+            Returns:
+            - final_cost : the cost of the matching between the two shapes
+        """
 
         self.shape1=shape1
         self.shape2=shape2
@@ -42,7 +52,7 @@ class ShapeComparator :
 
         cost_matrix = basic_cost_matrix.copy()
 
-        associations = self.hungarian_algorithm(cost_matrix, l1, l2)
+        associations = self.hungarian_algorithm(cost_matrix)
 
         self.associations = associations
         final_cost = 0
@@ -52,10 +62,21 @@ class ShapeComparator :
         return final_cost
 
 
-    def hungarian_algorithm(self, cost_matrix, l1, l2):
+    def hungarian_algorithm(self, cost_matrix):
+        """
+            Implementation of the hungarian algorithm
+
+            Inputs:
+            - cost_matrix: matrix for wich we want to find the minimum sum of elements
+                chosed so that there is onely one element per line and per column
+
+            Returns:
+            - associations: a list of the coordonates of the chosen elements
+        """
 
         #Step 0 : create zeros
-
+        l1 = cost_matrix.shape[0]
+        l2 = cost_matrix.shape[1]
         nb_connections = min(l1,l2)
 
         for n1 in xrange(l1):
@@ -144,7 +165,7 @@ class ShapeComparator :
                     elif(marked_lines[n1]==0 and marked_columns[n2]==1):
                         cost_matrix[n1,n2]+=mini
 
-            return self.hungarian_algorithm(cost_matrix, l1, l2)
+            return self.hungarian_algorithm(cost_matrix)
 
         return associations
 

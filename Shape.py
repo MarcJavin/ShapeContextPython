@@ -20,6 +20,10 @@ class Shape :
 
 
     def compute_histograms(self):
+        """
+            Compute the ShapeContext histogram of the shape
+        """
+
         nb_points = len(self.points)
         distances = np.zeros((nb_points,nb_points))
         angles = np.zeros((nb_points,nb_points))
