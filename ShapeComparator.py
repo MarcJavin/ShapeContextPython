@@ -11,14 +11,14 @@ class ShapeComparator :
     def __init__(self):
         self.shape1 = None
         self.shape2 = None
-        self.associations = None
+        self.associations = []
         return
 
 
     def compare(self,shape1, shape2):
         """
             Find the best association between the points of shape1 and shape2
-            
+
             Inputs:
             - shape1 : first shape
             - shape2 : second shape
@@ -52,11 +52,10 @@ class ShapeComparator :
 
         cost_matrix = basic_cost_matrix.copy()
 
-        associations = self.hungarian_algorithm(cost_matrix)
+        self.associations = self.hungarian_algorithm(cost_matrix)
 
-        self.associations = associations
         final_cost = 0
-        for a in associations:
+        for a in self.associations:
             final_cost+=basic_cost_matrix[a[0],a[1]]
 
         return final_cost
@@ -105,7 +104,7 @@ class ShapeComparator :
 
         for k in xrange(l1):
             n1 = np.argmin(nb_zero_lines)
-            nb_zero_lines[n1]=l2
+            nb_zero_lines[n1]=l2+1
             for n2 in xrange(l2):
                 if(cost_matrix[n1,n2]==0):
                     if(zero_lines[n1]==0 and zero_columns[n2]==0):
